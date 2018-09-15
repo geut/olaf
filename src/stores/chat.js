@@ -4,26 +4,46 @@ function store (state, emitter) {
   state.storeName = 'chat'
 
   // declare app events
-  state.events.SENDMSG = 'chat:send'
-  state.chat = state.chat || {}
-  state.chat.history = state.chat.history || []
-  // sample data
-  state.chat.friends = [
-    {
-      name: 'tincho',
-      lastseen: 'a minute ago'
-    },
-    {
-      name: 'masse',
-      lastseen: 'a minute ago'
-    }
-  ]
+  const { events } = state
+  events.UPDATE_USERNAME = 'chat:update_username'
+  events.CREATE_CHANNEL = 'chat:create_channel'
+  events.CONNECT_CHANNEL = 'chat:connect_channel'
+  events.JOIN_FRIEND = 'chat:join_friend'
+  events.LEAVE_FRIEND = 'chat:leave_friend'
+  events.ADD_MESSAGE = 'chat:add_message'
+
+  state.chat = {
+    username: null,
+    currentChannel: null,
+    messages: [],
+    friends: []
+  }
 
   emitter.on('DOMContentLoaded', function () {
-    emitter.on(state.events.SENDMSG, function (msg) {
-      console.log('new msg', msg)
-      state.chat.history.push(msg)
-      emitter.emit(state.events.RENDER)
-    })
+    emitter.on(events.UPDATE_USERNAME, updateUsername)
+    emitter.on(events.CREATE_CHANNEL, createChannel)
+    emitter.on(events.CONNECT_CHANNEL, connectChannel)
+    emitter.on(events.ADD_MESSAGE, addMessage)
   })
+
+  function updateUsername (username) {
+    state.chat.username = username
+    render()
+  }
+
+  function createChannel () {
+    state.chat.currentChannel = new Date()
+    render()
+  }
+
+  function connectChannel () {}
+
+  function addMessage (msg) {
+    state.chat.messages.push(msg)
+    render()
+  }
+
+  function render () {
+    emitter.emit('render')
+  }
 }

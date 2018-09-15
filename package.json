@@ -24,9 +24,14 @@
     "parcel-bundler": "^1.9.7"
   },
   "dependencies": {
+    "chatmesh-db": "^2.0.2",
     "choo": "^6.13.0",
     "choo-devtools": "^2.5.1",
     "choo-service-worker": "^2.4.0",
-    "tachyons": "^4.11.1"
+    "pump": "^3.0.0",
+    "random-access-memory": "^3.0.0",
+    "signalhub": "^4.9.0",
+    "tachyons": "^4.11.1",
+    "webrtc-swarm": "^2.9.0"
   }
 }

@@ -19,7 +19,7 @@ function view (state, emit) {
           ${state.cache(users, 'users').render()}
         </aside>
         <section class="w-100 pa3 cover">
-        ${state.chat.history.map(m => msg(m))}
+        ${state.chat.messages.map(m => msg(m))}
         </section>
         <section class="w-100 absolute bottom-0 center lh-copy">
           ${state.cache(inputMsg, 'inputMsg').render()}
