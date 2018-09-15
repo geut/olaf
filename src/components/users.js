@@ -24,7 +24,7 @@ module.exports = class Users extends component {
 
   createElement () {
     return html`
-      <ul class="list pa3 mt0 measure center">
+      <ul class="list pa3 pa0-ns mt0 measure center">
         ${this.local.friends.map(user)}
       </ul>
     `
