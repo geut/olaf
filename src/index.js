@@ -1,7 +1,4 @@
-var css = require('sheetify')
 var choo = require('choo')
-
-css('tachyons')
 
 var app = choo()
 if (process.env.NODE_ENV !== 'production') {

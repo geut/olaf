@@ -4,7 +4,6 @@ const html = require('choo/html')
 const user = require('./user')
 
 module.exports = class Users extends component {
-
   constructor (name, state, emit) {
     super(name)
     this.state = state
@@ -20,7 +19,7 @@ module.exports = class Users extends component {
 
   update () {
     if (this.state.chat.friends.length !== this.local.friends.length) return true
-    return false;
+    return false
   }
 
   createElement () {
