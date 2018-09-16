@@ -19,7 +19,7 @@ module.exports = class ViewMessages extends Component {
     this.messages = messages.slice()
 
     return html`
-      <section id="olaf-chat" class="vh-100 w-100 w-60-ns pa3 ba b--silver b--dashed br3 cover overflow-auto">
+      <section id="olaf-chat" class="w-100 vh-75 w-60-ns pa3 ba b--silver b--dashed br3 cover overflow-auto mt2 mt0-ns">
         ${this.messages.map(m => message(m))}
       </section>
     `

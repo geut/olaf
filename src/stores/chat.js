@@ -16,7 +16,16 @@ function store (state, emitter) {
     username: null,
     currentChannel: null,
     messages: [],
-    friends: []
+    friends: [
+      {
+        name: 'tincho',
+        lastseen: 'a minute ago'
+      },
+      {
+        name: 'masse',
+        lastseen: 'a day ago'
+      }
+    ]
   }
 
   emitter.on('DOMContentLoaded', function () {
