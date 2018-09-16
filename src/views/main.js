@@ -1,5 +1,6 @@
 const html = require('choo/html')
 
+const Modal = require('../components/modal')
 const InputMsg = require('../components/input-msg')
 const ViewMessages = require('../components/view-messages')
 const Users = require('../components/users')
@@ -13,6 +14,7 @@ function view (state, emit) {
 
   return html`
     <body class="code lh-copy vh-100">
+      ${(!state.chat.username) ? state.cache(Modal, 'modal').render() : ''}
       <main class="pa3 flex flex-wrap vh-100 dt w-100">
         <div class="logo w-100">
           <h1>olaf 🐱</h1>
