@@ -31,6 +31,7 @@ module.exports = class InputMsg extends Component {
               placeholder="Message..."
               autofocus
               type="text"
+              autocomplete="off"
               name="chat-msg"
               id="input-msg">
             <input

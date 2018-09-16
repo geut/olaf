@@ -35,6 +35,7 @@ module.exports = class Users extends component {
       this.local.toggleList = !this.local.toggleList;
     }
     this.listEl.classList.toggle('dn', ('boolean' === typeof this.local.toggleList && !this.local.toggleList))
+    this.listEl.classList.toggle('vh-25', ('boolean' === typeof this.local.toggleList && this.local.toggleList))
   }
 
   createElement () {

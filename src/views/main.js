@@ -19,7 +19,7 @@ function view (state, emit) {
         </div>
         <div class="flex w-100 justify-between flex-wrap-reverse flex-wrap-ns">
           ${state.cache(ViewMessages, 'viewMessages').render({ messages: state.chat.messages })}
-          <aside class="w-100 w-30-ns pa1-ns ba b--silver b--dashed br3 overflow-auto">
+          <aside class="w-100 vh-75-ns w-30-ns pa1-ns ba b--silver b--dashed br3 overflow-auto">
             ${state.cache(Users, 'users').render({ friends: state.chat.friends })}
           </aside>
         </div>
