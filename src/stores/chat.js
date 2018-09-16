@@ -24,6 +24,38 @@ function store (state, emitter) {
       {
         name: 'masse',
         lastseen: 'a day ago'
+      },
+      {
+        name: 'tincho',
+        lastseen: 'a minute ago'
+      },
+      {
+        name: 'masse',
+        lastseen: 'a day ago'
+      },
+      {
+        name: 'tincho',
+        lastseen: 'a minute ago'
+      },
+      {
+        name: 'masse',
+        lastseen: 'a day ago'
+      },
+      {
+        name: 'tincho',
+        lastseen: 'a minute ago'
+      },
+      {
+        name: 'masse',
+        lastseen: 'a day ago'
+      },
+      {
+        name: 'tincho',
+        lastseen: 'a minute ago'
+      },
+      {
+        name: 'masse',
+        lastseen: 'a day ago'
       }
     ]
   }
