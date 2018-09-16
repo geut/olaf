@@ -28,7 +28,6 @@ module.exports = class Users extends component {
     e.preventDefault();
     e.stopPropagation();
     this.listEl = this.element.querySelector('.list')
-    console.log(this.listEl)
     if ('undefined' === typeof this.local.toggleList) {
       this.local.toggleList = true;
     } else {
