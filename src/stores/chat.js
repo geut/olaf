@@ -24,48 +24,35 @@ function store (state, emitter) {
       {
         name: 'masse',
         lastseen: 'a day ago'
-      },
-      {
-        name: 'tincho',
-        lastseen: 'a minute ago'
-      },
-      {
-        name: 'masse',
-        lastseen: 'a day ago'
-      },
-      {
-        name: 'tincho',
-        lastseen: 'a minute ago'
-      },
-      {
-        name: 'masse',
-        lastseen: 'a day ago'
-      },
-      {
-        name: 'tincho',
-        lastseen: 'a minute ago'
-      },
-      {
-        name: 'masse',
-        lastseen: 'a day ago'
-      },
-      {
-        name: 'tincho',
-        lastseen: 'a minute ago'
-      },
-      {
-        name: 'masse',
-        lastseen: 'a day ago'
       }
     ]
   }
 
   emitter.on('DOMContentLoaded', function () {
+    initialize()
+    emitter.on(events.JOIN_FRIEND, joinFriend)
     emitter.on(events.UPDATE_USERNAME, updateUsername)
     emitter.on(events.CREATE_CHANNEL, createChannel)
     emitter.on(events.CONNECT_CHANNEL, connectChannel)
     emitter.on(events.ADD_MESSAGE, addMessage)
   })
+
+  function initialize () {
+    // Al principio debemos chequear un par de cosas:
+    //   - cual es mi usuario
+    //   - si existe un channel o debo crearlo
+    //   Usaremos el localStorage para almacenar estos valores.
+    const nickname = window.localStorage.getItem('olaf:nickname')
+    if (nickname) {
+      state.chat.username = nickname
+    }
+    render()
+  }
+
+  function joinFriend () {
+    console.log('new friend', state.chat.username)
+    render()
+  }
 
   function updateUsername (username) {
     state.chat.username = username
