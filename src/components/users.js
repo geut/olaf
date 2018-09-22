@@ -25,22 +25,22 @@ module.exports = class Users extends component {
   }
 
   toggleFriends = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
     this.listEl = this.element.querySelector('.list')
-    if ('undefined' === typeof this.local.toggleList) {
-      this.local.toggleList = true;
+    if (typeof this.local.toggleList === 'undefined') {
+      this.local.toggleList = true
     } else {
-      this.local.toggleList = !this.local.toggleList;
+      this.local.toggleList = !this.local.toggleList
     }
-    this.listEl.classList.toggle('dn', ('boolean' === typeof this.local.toggleList && !this.local.toggleList))
-    this.listEl.classList.toggle('vh-25', ('boolean' === typeof this.local.toggleList && this.local.toggleList))
+    this.listEl.classList.toggle('dn', (typeof this.local.toggleList && !this.local.toggleList === 'boolean'))
+    this.listEl.classList.toggle('vh-25', (typeof this.local.toggleList && this.local.toggleList === 'boolean'))
   }
 
   createElement () {
     return html`
       <div class="">
-        <h2 class="f2 tc ma0 ph3 ph0-ns measure">
+        <h2 class="f2 tc ma0 ph3 ph1-ns measure">
           <a href="#" class="link dim dark-gray" onclick=${this.toggleFriends}>
             Friends
           </a>

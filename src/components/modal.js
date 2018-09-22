@@ -33,14 +33,14 @@ module.exports = class Modal extends Component {
   createElement () {
     return html`
       <div
-        class="mw-100 w-60 fixed z-5 center ph3 ph5-ns tc br2 pv5 bg-washed-green dark-green mb"
-        style="transform: translate(-50%, -50%);left: 50%; top: 50%; height: 450px; max-height: 100%"
+        class="mw-100 w-60 fixed z-5 center ph3 ph5-ns tc br2 pv3 pv5-ns bg-washed-green dark-green mb"
+        style="transform: translate(-50%, -50%);left: 50%; top: 50%; height: 380px; max-height: 100%"
         >
         <h1 class="fw6 f3 f2-ns lh-title mt0 mb3">
           Welcome! Please set your nickname.
         </h1>
         <form class="pa3 black-80">
-          <div class="measure">
+          <div class="measure center">
             <label for="set-nickname" class="f6 b db mb2">Nickname</label>
 
             <input id="set-nickname" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="nickname-desc" autocomplete="off" required>
