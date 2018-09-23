@@ -15,13 +15,13 @@ const CUSTOM = 'custom'
  * const discoverySwarm = Swarm({ db: myHyperdb }) // creates a swarm using discovery-swarm with dat-swarm-defaults
  *
  ** ALT 2 **
- * const webrtcSwarm = Swarm({ db: myHyperdb, hub: mySignalHub }) // creates a swarm using webrtc-swarm
+ * const webrtcSwarm = Swarm({ db: myHyperdb, swarm: webrtc, hub: mySignalHub }) // creates a swarm using webrtc-swarm
  *
  * ALT 3 **
  * const customDiscoverySwarm = Swarm({ db: myHyperdb, opts: customOpts }) // creates a discovery swarm with custom opts merged with defaults
  *
  * ALT 4 **
- * const customWebrtcSwarm = Swarm({ db: myHyperdb, hub: mySignalHub, opts: customOpts }) // creates a webrtc swarm with custom opts
+ * const customWebrtcSwarm = Swarm({ db: myHyperdb, swarm: webrtc, hub: mySignalHub, opts: customOpts }) // creates a webrtc swarm with custom opts
  *
  * ALT 5 **
  * const xSwarm = Swarm({ db: myHyperdb, swarm: customSwarmConstructor, opts: customOpts }) // creates a custom swarm with custom opts
@@ -35,9 +35,9 @@ module.exports = ({ db, swarm = discovery, opts = {} }) => {
   let swarmInstance
 
   if (typeof swarm.join === 'function') {
+    // discovery swarm like API
     // merge with Dat swarm defaults
     opts = swarmDefaults(opts)
-    // discovery swarm like API
     swarmInstance = swarm(opts)
     swarmInstance.type = NODE
     swarm.join(db.key.toString('hex'))
@@ -45,10 +45,13 @@ module.exports = ({ db, swarm = discovery, opts = {} }) => {
   }
   if (opts.hub) {
     // webrtc-swarm like API
-    swarmInstance = swarmInstance(opts.hub, opts)
+    assert(typeof swarm === 'function', 'swarm must be a function')
+    swarmInstance = swarm(opts.hub, opts)
     swarmInstance.type = WEBRTC
-    swarmInstance.on('connect', db.onconnection.bind(db))
+    const connectionKey = opts.connectionKey || 'connect'
+    swarmInstance.on(connectionKey, db.onconnection.bind(db))
   } else {
+    // custom swarm
     assert(typeof opts === 'object', 'For custom swarms opts must be defined')
     assert(opts.connectionKey && typeof opts.connectionKey === 'string', 'For custom swarms opts.connectionkey must be defined')
     swarmInstance = swarm(opts)
