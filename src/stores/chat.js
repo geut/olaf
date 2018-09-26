@@ -4,7 +4,8 @@ const saga = require('../lib/saga')
 const swarm = require('../lib/discovery-swarm-webrtc')
 
 async function initChat (username, key) {
-  const chat = saga(ram, key, username)
+  const publicKey = key && key.length > 0 ? key : null
+  const chat = saga(ram, publicKey, username)
 
   await chat.initialize()
 
@@ -32,6 +33,8 @@ function store (state, emitter) {
   // declare app events
   const { events } = state
   events.INIT_CHANNEL = 'chat:init_channel'
+  events.UPDATE_USERNAME = 'chat:update_username'
+  events.UPDATE_KEY = 'chat:update_key'
   events.JOIN_FRIEND = 'chat:join_friend'
   events.LEAVE_FRIEND = 'chat:leave_friend'
   events.WRITE_MESSAGE = 'chat:write_message'
@@ -40,6 +43,7 @@ function store (state, emitter) {
   let chat
 
   state.chat = {
+    initChannel: false,
     key: null,
     username: null,
     messages: [],
@@ -49,6 +53,8 @@ function store (state, emitter) {
   emitter.on('DOMContentLoaded', function () {
     initialize()
     emitter.on(events.INIT_CHANNEL, initChannel)
+    emitter.on(events.UPDATE_USERNAME, updateUsername)
+    emitter.on(events.UPDATE_KEY, updateKey)
     emitter.on(events.ADD_MESSAGE, addMessage)
     emitter.on(events.WRITE_MESSAGE, writeMessage)
     emitter.on(events.JOIN_FRIEND, joinFriend)
@@ -72,12 +78,13 @@ function store (state, emitter) {
     render()
   }
 
-  async function initChannel (username, key) {
-    state.chat.username = username
-
-    chat = await initChat(username, key)
+  async function initChannel () {
+    chat = await initChat(state.chat.username, state.chat.key)
 
     state.chat.key = chat.db.key.toString('hex')
+    state.chat.init = true
+
+    window.localStorage.setItem('olaf', JSON.stringify({ username: state.chat.username, key: state.chat.key }))
 
     chat.on('message', data => {
       emitter.emit(events.ADD_MESSAGE, data)
@@ -91,6 +98,16 @@ function store (state, emitter) {
       emitter.emit(events.LEAVE_FRIEND, user)
     })
 
+    render()
+  }
+
+  function updateUsername (username) {
+    state.chat.username = username
+    render()
+  }
+
+  function updateKey (key) {
+    state.chat.key = key
     render()
   }
 

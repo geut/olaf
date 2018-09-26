@@ -1,36 +1,9 @@
-const Component = require('choo/component')
 const html = require('choo/html')
 
-module.exports = class Modal extends Component {
-  constructor (name, state, emit) {
-    super(name)
-    this.state = state
-    this.emit = emit
-  }
+module.exports = function modal (props, emit, events) {
+  const { username, key } = props
 
-  update () {
-    return false
-  }
-
-  join = (e) => {
-    e.stopPropagation()
-    e.preventDefault()
-    const { events } = this.state
-    const inputNickname = this.element.querySelector('#nickname')
-    const inputKey = this.element.querySelector('#key')
-    if (!inputNickname.value || inputNickname.value.length === 0) return
-
-    const key = inputKey.value.length > 0 ? inputKey.value : null
-    this.emit(events.INIT_CHANNEL, inputNickname.value, key)
-
-    inputNickname.value = ''
-    inputKey.value = ''
-
-    this.element.classList.add('dn')
-  }
-
-  createElement () {
-    return html`
+  return html`
       <div
         class="mw-100 w-60 fixed z-5 center ph3 ph5-ns tc br2 pv3 pv5-ns bg-washed-green dark-green mb"
         style="transform: translate(-50%, -50%);left: 50%; top: 50%; height: 380px; max-height: 100%"
@@ -42,21 +15,47 @@ module.exports = class Modal extends Component {
           <div class="measure center">
             <label for="nickname" class="f6 b db mb2">Nickname</label>
 
-            <input id="nickname" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="nickname-desc" autocomplete="off" required>
+            <input id="nickname"
+              value=${username}
+              onkeyup=${updateUsername}
+              class="input-reset ba b--black-20 pa2 mb2 db w-100"
+              type="text"
+              aria-describedby="nickname-desc"
+              autocomplete="off"
+              required>
           </div>
           <div class="measure center">
             <label for="key" class="f6 b db mb2">Channel</label>
 
-            <input id="key" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="nickname-desc" autocomplete="off" placeholder="Dat Public Key or leave it empty">
+            <input id="key"
+              value=${key}
+              onkeyup=${updateKey}
+              class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text"
+              aria-describedby="nickname-desc"
+              autocomplete="off"
+              placeholder="Dat Public Key or leave it empty">
           </div>
         </form>
         <div>
           <a class="center ma2 f6 br-pill bg-dark-green no-underline washed-green ba b--dark-green grow pv2 ph3 dib mr3"
-            href="#" onclick=${this.join}>
+            href="#" onclick=${join}>
             Join
           </a>
         </div>
       </div>
     `
+
+  function join (e) {
+    e.stopPropagation()
+    e.preventDefault()
+    emit(events.INIT_CHANNEL)
+  }
+
+  function updateUsername (e) {
+    emit(events.UPDATE_USERNAME, e.target.value)
+  }
+
+  function updateKey (e) {
+    emit(events.UPDATE_KEY, e.target.value)
   }
 }
