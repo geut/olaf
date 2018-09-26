@@ -8,22 +8,30 @@ module.exports = class ViewMessages extends Component {
     super(name)
     this.state = state
     this.emit = emit
-    this.messages = []
+    this.local = this.state.components[name] = {}
+    this.updateLocal()
   }
 
-  update ({ messages = [] }) {
-    return messages.length !== this.messages.length
+  updateLocal () {
+    this.local.messages = this.state.chat.messages.slice()
+    this.local.messages.sort((a, b) => a.timestamp - b.timestamp)
   }
 
-  createElement ({ messages }) {
-    this.messages = messages.slice()
+  update () {
+    const { chat: { messages } } = this.state
+    if (this.local.messages.length !== messages.length) {
+      this.updateLocal()
+      return true
+    }
+  }
 
+  createElement () {
     return html`
       <section
         id="olaf-chat"
         class="w-100 w-60-ns shadow-5 vh-75  pa3 ba b--silver b--dashed br3 cover overflow-auto mt2 mt0-ns"
         >
-        ${this.messages.map(m => message(m))}
+        ${this.local.messages.map(m => message(m))}
       </section>
     `
   }

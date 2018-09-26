@@ -16,18 +16,17 @@ module.exports = class Modal extends Component {
     e.stopPropagation()
     e.preventDefault()
     const { events } = this.state
-    const input = this.element.querySelector('#set-nickname')
-    if (!input.value) return
+    const inputNickname = this.element.querySelector('#nickname')
+    const inputKey = this.element.querySelector('#key')
+    if (!inputNickname.value || inputNickname.value.length === 0) return
 
-    this.emit(events.JOIN_FRIEND, input.value)
-    input.value = ''
+    const key = inputKey.value.length > 0 ? inputKey.value : null
+    this.emit(events.INIT_CHANNEL, inputNickname.value, key)
+
+    inputNickname.value = ''
+    inputKey.value = ''
+
     this.element.classList.add('dn')
-  }
-
-  createChannel = (e) => {
-    console.log('create channel')
-    const { events } = this.state
-    this.emit(events.CREATE_CHANNEL, 'general')
   }
 
   createElement () {
@@ -37,13 +36,18 @@ module.exports = class Modal extends Component {
         style="transform: translate(-50%, -50%);left: 50%; top: 50%; height: 380px; max-height: 100%"
         >
         <h1 class="fw6 f3 f2-ns lh-title mt0 mb3">
-          Welcome! Please set your nickname.
+          Welcome! Please set your info.
         </h1>
         <form class="pa3 black-80">
           <div class="measure center">
-            <label for="set-nickname" class="f6 b db mb2">Nickname</label>
+            <label for="nickname" class="f6 b db mb2">Nickname</label>
 
-            <input id="set-nickname" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="nickname-desc" autocomplete="off" required>
+            <input id="nickname" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="nickname-desc" autocomplete="off" required>
+          </div>
+          <div class="measure center">
+            <label for="key" class="f6 b db mb2">Channel</label>
+
+            <input id="key" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="nickname-desc" autocomplete="off" placeholder="Dat Public Key or leave it empty">
           </div>
         </form>
         <div>
@@ -51,10 +55,7 @@ module.exports = class Modal extends Component {
             href="#" onclick=${this.join}>
             Join
           </a>
-          <a class="center ma2 f6 br-pill dark-green no-underline ba grow pv2 ph3 dib"
-            href="#" onclick=${this.createChannel}>
-            Create channel
-          </a>
+        </div>
       </div>
     `
   }

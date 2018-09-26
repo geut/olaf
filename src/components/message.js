@@ -1,7 +1,7 @@
 const html = require('choo/html')
 
-module.exports = (msg) => {
+module.exports = ({ username, message }) => {
   return html`
-    <p class="f5 lh-copy measure-wide">${msg}</p>
+    <p class="f5 lh-copy measure-wide">${username}: ${message}</p>
   `
 }
