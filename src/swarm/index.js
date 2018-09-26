@@ -1,63 +1,109 @@
 // swarm == enjambre
 const assert = require('assert')
+const Emitter = require('events')
 const swarmDefaults = require('dat-swarm-defaults')
 const discovery = require('discovery-swarm')
+const webrtc = require('webrtc-swarm')
 
-const NODE = 'discovery'
+const DISCOVERY = 'discovery'
 const WEBRTC = 'webrtc'
-const CUSTOM = 'custom'
+const MULTI = 'multiple'
 
 /**
  * USAGE:
+ *
  * const Swarm = require('./swarm')
  *
- ** ALT 1 **
- * const discoverySwarm = Swarm({ db: myHyperdb }) // creates a swarm using discovery-swarm with dat-swarm-defaults
+ *** simple, creates a discovery-swarm  **
+ * const swarm = Swarm()
  *
- ** ALT 2 **
- * const webrtcSwarm = Swarm({ db: myHyperdb, swarm: webrtc, hub: mySignalHub }) // creates a swarm using webrtc-swarm
+ *** webrtc swarm **
+ * const swarm = Swarm({ type: 'webrtc', hub: 'somehub.hubby.hub' })
  *
- * ALT 3 **
- * const customDiscoverySwarm = Swarm({ db: myHyperdb, opts: customOpts }) // creates a discovery swarm with custom opts merged with defaults
- *
- * ALT 4 **
- * const customWebrtcSwarm = Swarm({ db: myHyperdb, swarm: webrtc, hub: mySignalHub, opts: customOpts }) // creates a webrtc swarm with custom opts
- *
- * ALT 5 **
- * const xSwarm = Swarm({ db: myHyperdb, swarm: customSwarmConstructor, opts: customOpts }) // creates a custom swarm with custom opts
  */
 
-module.exports = ({ db, swarm = discovery, opts = {} }) => {
-  // db is required
-  assert(typeof db === 'object', 'db is required')
+class Swarm extends Emitter {
+  constructor (opts = {}) {
+    super(opts)
+    assert(typeof opts.db === 'object', 'opts.db is a required param') // db is a hyperdb instance
 
-  // create your swarm
-  let swarmInstance
+    this.db = opts.db
+    this.instance = null
 
-  if (typeof swarm.join === 'function') {
-    // discovery swarm like API
-    // merge with Dat swarm defaults
-    opts = swarmDefaults(opts)
-    swarmInstance = swarm(opts)
-    swarmInstance.type = NODE
-    swarm.join(db.key.toString('hex'))
-    swarmInstance.on('connection', db.onconnection.bind(db))
+    this.EVENTS = {
+      CONNECTION: 'connection',
+      CLOSE: 'connection:close',
+      CONNECTION_FAIL: 'connection:fail',
+      JOIN: 'join',
+      LEAVE: 'leave'
+    }
+
+    this.EVENTS_MAP = {
+      CONNECTION: ['connection', 'peer'],
+      CLOSE: ['connection-closed', 'close'],
+      CONNECTION_FAIL: ['connect-failed'],
+      JOIN: ['peer'],
+      LEAVE: ['connection-closed', 'close']
+    }
+
+    this.connections = [] // maybe rename to peers?
+    // bind local methods
+    this.onConnection.bind(this)
+    this.onClose.bind(this)
+    this.onJoin.bind(this)
+    this.onLeave.bind(this)
+    this.onFail.bind(this)
+
+    if (!opts.type) {
+      opts.type = DISCOVERY // we can try MULTI as a default later
+    }
+
+    if (opts.type === MULTI) {
+      this._createSwarm(swarmDefaults(opts))
+      this._createWebrtcSwarm(opts)
+      return this
+    }
+    if (opts.type === DISCOVERY) this._createSwarm(swarmDefaults(opts))
+    if (opts.type === WEBRTC) this._createWebrtcSwarm(opts)
   }
-  if (opts.hub) {
-    // webrtc-swarm like API
-    assert(typeof swarm === 'function', 'swarm must be a function')
-    swarmInstance = swarm(opts.hub, opts)
-    swarmInstance.type = WEBRTC
-    const connectionKey = opts.connectionKey || 'connect'
-    swarmInstance.on(connectionKey, db.onconnection.bind(db))
-  } else {
-    // custom swarm
-    assert(typeof opts === 'object', 'For custom swarms opts must be defined')
-    assert(opts.connectionKey && typeof opts.connectionKey === 'string', 'For custom swarms opts.connectionkey must be defined')
-    swarmInstance = swarm(opts)
-    swarmInstance.type = CUSTOM
-    swarmInstance.on(opts.connectionKey, db.onconnection.bind(db))
+
+  _createSwarm () {
+    this.instance = discovery(swarmDefaults(this.opts)) // merge with Dat swarm defaults
+    this.instance.join(this.db.key.toString('hex'))
+    this.instance.on('connection', this.onConnection)
+    this.instance.on('connection-closed', this.onClose)
+    this.instance.on('connection-failed', this.onConnectionFail)
   }
 
-  return swarmInstance
+  _createWebrtcSwarm () {
+    assert(typeof this.opts.hub === 'string', 'For webrtc swarms, hub is required')
+    this.instance = webrtc(this.opts.hub, this.opts)
+    this.instance.on('connect', this.onConnection)
+  }
+
+  onConnection (connection, info) {
+    // do something on connection
+    this.emit(this.EVENTS.CONNECTION, { connection, info })
+  }
+
+  onClose (connection, info) {
+    // do something on close
+    this.emit(this.EVENTS.CLOSE, { connection, info })
+  }
+
+  onJoin () {
+    // emit joined peer
+    this.emit(this.EVENTS.JOIN, {}) // emit userData
+  }
+
+  onLeave (connection, info) {
+    this.emit(this.EVENTS.LEAVE, { connection, info })
+  }
+
+  onConnectionFail (peer, details) {
+    // do something onfail
+    this.emit(this.EVENTS.CONNECTION_FAIL, { peer, details })
+  }
 }
+
+module.exports = (opts) => new Swarm(opts)
