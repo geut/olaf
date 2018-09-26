@@ -9,10 +9,10 @@ module.exports = class ViewMessages extends Component {
     this.state = state
     this.emit = emit
     this.local = this.state.components[name] = {}
-    this.updateLocal()
+    this.setState()
   }
 
-  updateLocal () {
+  setState () {
     this.local.messages = this.state.chat.messages.slice()
     this.local.messages.sort((a, b) => a.timestamp - b.timestamp)
   }
@@ -20,7 +20,7 @@ module.exports = class ViewMessages extends Component {
   update () {
     const { chat: { messages } } = this.state
     if (this.local.messages.length !== messages.length) {
-      this.updateLocal()
+      this.setState()
       return true
     }
   }

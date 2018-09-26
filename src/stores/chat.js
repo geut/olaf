@@ -46,12 +46,13 @@ function store (state, emitter) {
     initChannel: false,
     key: null,
     username: null,
+    userTimestamp: null,
     messages: [],
     friends: []
   }
 
   emitter.on('DOMContentLoaded', function () {
-    initialize()
+    rehydrate()
     emitter.on(events.INIT_CHANNEL, initChannel)
     emitter.on(events.UPDATE_USERNAME, updateUsername)
     emitter.on(events.UPDATE_KEY, updateKey)
@@ -61,7 +62,7 @@ function store (state, emitter) {
     emitter.on(events.LEAVE_FRIEND, leaveFriend)
   })
 
-  function initialize () {
+  function rehydrate () {
     // Al principio debemos chequear un par de cosas:
     //   - cual es mi usuario
     //   - si existe un channel o debo crearlo
@@ -78,10 +79,11 @@ function store (state, emitter) {
     render()
   }
 
-  async function initChannel () {
-    chat = await initChat(state.chat.username, state.chat.key)
+  async function initChannel (isNew = false) {
+    chat = await initChat(state.chat.username, isNew ? null : state.chat.key)
 
     state.chat.key = chat.db.key.toString('hex')
+    state.chat.userTimestamp = Date.now()
     state.chat.init = true
 
     window.localStorage.setItem('olaf', JSON.stringify({ username: state.chat.username, key: state.chat.key }))

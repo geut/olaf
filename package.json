@@ -36,6 +36,7 @@
     "random-access-memory": "^3.0.0",
     "signalhub": "^4.9.0",
     "tachyons": "^4.11.1",
+    "tinydate": "^1.0.0",
     "webrtc-swarm": "^2.9.0"
   }
 }
