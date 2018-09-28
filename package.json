@@ -5,8 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\"",
     "posttest": "npm run lint",
-    "start": "parcel index.html",
-    "lint": "eslint src"
+    "start": "parcel index.html --https -p 3000",
+    "lint": "eslint src",
+    "signal": "signalhub listen -p 4000"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,7 @@
   "devDependencies": {
     "babel-eslint": "^9.0.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
     "eslint": "^5.6.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-babel": "^5.2.0",
@@ -24,14 +26,17 @@
     "parcel-bundler": "^1.9.7"
   },
   "dependencies": {
-    "chatmesh-db": "^2.0.2",
     "choo": "^6.13.0",
     "choo-devtools": "^2.5.1",
     "choo-service-worker": "^2.4.0",
+    "flush-write-stream": "^1.0.3",
+    "hyperdb": "^3.5.0",
+    "hyperid": "^1.4.1",
     "pump": "^3.0.0",
     "random-access-memory": "^3.0.0",
     "signalhub": "^4.9.0",
     "tachyons": "^4.11.1",
+    "tinydate": "^1.0.0",
     "webrtc-swarm": "^2.9.0"
   }
 }
