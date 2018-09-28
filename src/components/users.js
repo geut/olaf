@@ -45,8 +45,9 @@ module.exports = class Users extends component {
     } else {
       this.local.toggleList = !this.local.toggleList
     }
-    this.listEl.classList.toggle('dn', (typeof this.local.toggleList && !this.local.toggleList === 'boolean'))
-    this.listEl.classList.toggle('vh-25', (typeof this.local.toggleList && this.local.toggleList === 'boolean'))
+
+    this.listEl.classList.toggle('dn', (!this.local.toggleList))
+    this.listEl.classList.toggle('vh-25', (this.local.toggleList))
   }
 
   createElement () {
@@ -57,7 +58,7 @@ module.exports = class Users extends component {
             Users
           </a>
         </h2>
-        <ul class="list dn db-ns pa3 pa0-ns mt0 measure center overflow-auto">
+        <ul class="list dn db-ns pa3 mt0 measure center overflow-auto">
           ${this.local.username ? user({ owner: true, username: this.local.username, timestamp: this.local.userTimestamp }) : null}
           ${this.local.friends.map(user)}
         </ul>
