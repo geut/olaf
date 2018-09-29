@@ -7,6 +7,12 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(require('choo-service-worker')())
 }
 
+if (module.hot) {
+  module.hot.accept(function () {
+    window.location.reload()
+  })
+}
+
 app.use(require('./stores/chat'))
 
 app.route('/', require('./views/main'))
