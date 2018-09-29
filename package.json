@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\"",
     "posttest": "npm run lint",
-    "start": "parcel index.html --https -p 3000",
+    "start": "parcel index.html -p 3000",
     "lint": "eslint src",
     "signal": "signalhub listen -p 4000"
   },
