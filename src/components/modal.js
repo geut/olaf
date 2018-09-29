@@ -5,7 +5,7 @@ module.exports = function modal (props, emit, events) {
 
   return html`
       <div
-        class="mw-100 w-60 fixed z-5 center ph3 ph5-ns tc br2 pv3 pv5-ns bg-washed-green dark-green mb"
+        class="mw-100 w-80 w-60-ns fixed z-5 center ph3 ph5-ns tc br2 pv3 pv5-ns bg-washed-green dark-green mb"
         style="transform: translate(-50%, -50%);left: 50%; top: 50%; max-height: 100%"
         >
         <h1 class="fw6 f3 f2-ns lh-title mt0 mb3">
