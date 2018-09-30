@@ -1,7 +1,9 @@
 const Component = require('choo/component')
 const html = require('choo/html')
 
-const message = require('./message')
+const Message = require('./message')
+
+const customStyle = 'outline: none;overflow-x: hidden;overflow-y: scroll;transform: translateZ(0);'
 
 module.exports = class ViewMessages extends Component {
   constructor (name, state, emit) {
@@ -30,13 +32,18 @@ module.exports = class ViewMessages extends Component {
       <section
         id="olaf-chat"
         class="w-100 w-60-ns shadow-5 vh-75  pa3 ba b--silver b--dashed br3 cover overflow-auto mt2 mt0-ns"
+        style=${customStyle}
         >
-        ${this.local.messages.map(m => message(m))}
+        ${this.local.messages.map(m => this.state.cache(Message, `message_${m.key}`, { updateHeight: this.updateHeight }).render(m))}
       </section>
     `
   }
 
-  afterupdate () {
-    this.element.scrollTo(0, this.element.scrollHeight)
+  updateHeight = h => {
+    this.element.scrollTo(0, this.element.scrollHeight + h + 10)
+  }
+
+  afterupdate (el) {
+    el.scrollTo(0, el.scrollHeight)
   }
 }
