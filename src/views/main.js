@@ -13,7 +13,7 @@ const statusChannel = ({ key, init }) => {
   if (!key || !init) return null
 
   return html`
-    <h4 style="overflow-wrap: break-word;">Connected to: ${key}</h4>
+    <h4 class="pre" style="overflow-wrap: break-word;">Connected to: ${key}</h4>
   `
 }
 
@@ -25,7 +25,7 @@ function view (state, emit) {
   return html`
     <body class="code lh-copy vh-100">
       <main class="pa3 flex flex-wrap vh-100 dt w-100">
-        <div class="logo w-100">
+        <div class="logo w-100 flex-wrap">
           <h1>olaf 🐱</h1>
           ${statusChannel({ init, key })}
         </div>
@@ -35,7 +35,7 @@ function view (state, emit) {
             ${init ? state.cache(Users, 'users').render() : ''}
           </aside>
         </div>
-        <section class="w-100 pa0 mt2">
+        <section class="w-100 pa0 mt2 mb2">
           ${state.cache(InputMsg, 'inputMsg').render()}
         </section>
       </main>

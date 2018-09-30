@@ -26,9 +26,11 @@
     "parcel-bundler": "^1.9.7"
   },
   "dependencies": {
+    "anchorme": "^1.1.2",
     "choo": "^6.13.0",
     "choo-devtools": "^2.5.1",
     "choo-service-worker": "^2.4.0",
+    "file-type": "^9.0.0",
     "flush-write-stream": "^1.0.3",
     "hyperdb": "^3.5.0",
     "hyperid": "^1.4.1",
