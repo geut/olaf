@@ -31,7 +31,7 @@ module.exports = class ViewMessages extends Component {
     return html`
       <section
         id="olaf-chat"
-        class="w-100 w-60-ns shadow-5 vh-75  pa3 ba b--silver b--dashed br3 cover overflow-auto mt2 mt0-ns"
+        class="flex-grow-1 flex-grow-0-ns w-100 w-60-ns shadow-5 pa3 ba b--silver b--dashed br3 cover overflow-auto mt2 mt0-ns"
         style=${customStyle}
         >
         ${this.local.messages.map(m => this.state.cache(Message, `message_${m.key}`, { updateHeight: this.updateHeight }).render(m))}
