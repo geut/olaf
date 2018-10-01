@@ -1,5 +1,9 @@
 @import 'tachyons';
 
+html, body {
+  height: 100%;
+}
+
 body {
   color: #004466;
   background-color: #00ffa2;

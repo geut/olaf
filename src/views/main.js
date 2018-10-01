@@ -13,7 +13,7 @@ const statusChannel = ({ key, init }) => {
   if (!key || !init) return null
 
   return html`
-    <h4 class="pre" style="overflow-wrap: break-word;">Connected to: ${key}</h4>
+    <h4 class="pre mt0 f6 f5-ns" style="overflow-wrap: break-word;">Connected to: ${key}</h4>
   `
 }
 
@@ -23,15 +23,15 @@ function view (state, emit) {
   const { username, key, init } = state.chat
 
   return html`
-    <body class="code lh-copy vh-100">
-      <main class="pa3 flex flex-wrap vh-100 dt w-100">
-        <div class="logo w-100 flex-wrap">
-          <h1>olaf 🐱</h1>
+    <body class="code lh-copy">
+      <main class="pa3 flex flex-column dt w-100 h-100">
+        <div class="logo w-100">
+          <h1 class="f2 mt0 mb0">olaf 🐱</h1>
           ${statusChannel({ init, key })}
         </div>
-        <div class="flex w-100 justify-between flex-wrap-reverse flex-wrap-ns">
+        <div class="flex w-100 justify-between flex-column-reverse flex-row-ns flex-grow-1">
           ${state.cache(ViewMessages, 'viewMessages').render()}
-          <aside class="w-100 vh-75-ns w-30-ns pa1-ns ba b--silver b--dashed br3 overflow-auto">
+          <aside class="w-100 w-30-ns pa1-ns ba b--silver b--dashed br3 overflow-auto">
             ${init ? state.cache(Users, 'users').render() : ''}
           </aside>
         </div>
