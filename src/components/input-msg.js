@@ -16,6 +16,11 @@ module.exports = class InputMsg extends Component {
     e.preventDefault()
     const { events } = this.state
     const input = this.element.querySelector('#input-msg')
+
+    if (input.value.length === 0) {
+      return
+    }
+
     this.emit(events.WRITE_MESSAGE, input.value)
     input.value = ''
   };
