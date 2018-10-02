@@ -1,5 +1,5 @@
 @import 'tachyons';
-@import 'balloon-css';
+@import 'balloon-css/balloon.min.css';
 
 html, body {
   height: 100%;
