@@ -78,11 +78,11 @@ class Message extends Component {
       <div class="flex h-auto mt3 tl" style="min-height:2rem">
         <div class="flex mr2 mr4-ns h2 br3 order-1">
           <div data-balloon="${date}" data-balloon-pos="right">
-            <div class="dib w3 w4-ns truncate"><span>${username}</span></div>
+            <div class="dib f7 f6-ns w3 w4-ns truncate"><span>${username}</span></div>
           </div>
         </div>
         <div class="flex order-2 olaf__message">
-          <p class="dib bg-white w-auto f6 pa3 br3 ba b--white f5-ns lh-copy measure measure-wide-ns mv0" style="word-break: break-all;">
+          <p class="dib bg-white w-auto f7 f6-ns pa1 pa3-ns br3 ba b--white f5-ns lh-copy measure measure-wide-ns mv0" style="word-break: break-all;">
             ${raw(anchorme(message))}
           </p>
         </div>
