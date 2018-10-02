@@ -3,7 +3,7 @@ const html = require('choo/html')
 
 const Message = require('./message')
 
-const customStyle = 'outline: none;overflow-x: hidden;overflow-y: scroll;transform: translateZ(0);'
+const customStyle = 'outline: none;overflow-x: hidden;overflow-y: auto;transform: translateZ(0);'
 
 module.exports = class ViewMessages extends Component {
   constructor (name, state, emit) {
