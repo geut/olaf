@@ -13,7 +13,7 @@ const statusChannel = ({ key, init }) => {
   if (!key || !init) return null
 
   return html`
-    <h4 class="pre mt0 f6 f5-ns" style="overflow-wrap: break-word;">Connected to: ${key}</h4>
+    <h4 class="pre mt0 f6 f5-ns truncate" style="overflow-wrap: break-word;">Connected to: ${key}</h4>
   `
 }
 
