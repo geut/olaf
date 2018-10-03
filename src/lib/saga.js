@@ -16,17 +16,9 @@ class Saga extends EventEmitter {
   }
 
   async initialize () {
-    await this.ready()
+    await this._ready()
 
-    this._updateHistory()
-
-    this.db.watch('messages', () => {
-      this._updateHistory()
-    })
-  }
-
-  ready () {
-    return new Promise(resolve => this.db.ready(resolve))
+    this._updateHistory(this._watchForMessages.bind(this))
   }
 
   writeMessage (message) {
@@ -43,7 +35,7 @@ class Saga extends EventEmitter {
         if (err) {
           reject(err)
         } else {
-          resolve()
+          resolve(key)
         }
       })
     })
@@ -100,7 +92,7 @@ class Saga extends EventEmitter {
     })
   }
 
-  _updateHistory () {
+  _updateHistory (onFinish) {
     const h = this.db.createHistoryStream({ reverse: true })
 
     const ws = writer.obj((data, enc, next) => {
@@ -119,7 +111,17 @@ class Saga extends EventEmitter {
       next()
     })
 
-    pump(h, ws)
+    pump(h, ws, onFinish)
+  }
+
+  _watchForMessages () {
+    this.db.watch('messages', () => {
+      this._updateHistory()
+    })
+  }
+
+  _ready () {
+    return new Promise(resolve => this.db.ready(resolve))
   }
 }
 
