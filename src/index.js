@@ -14,6 +14,7 @@ if (module.hot) {
 }
 
 app.use(require('./stores/chat'))
+app.use(require('./stores/ui'))
 
 app.route('/', require('./views/main'))
 app.route('/*', require('./views/404'))
