@@ -1,6 +1,10 @@
 const html = require('choo/html')
 
 module.exports = ({ owner = false, username, timestamp }) => {
+  if (!username || !timestamp) {
+    return ''
+  }
+
   let connectionTime = 'right now'
   const difference = Math.abs(new Date() - new Date(timestamp))
   let time = Math.floor(difference / 36e5) // hours

@@ -1,68 +1,23 @@
-const component = require('choo/component')
 const html = require('choo/html')
 
 const user = require('./user')
 
-module.exports = class Users extends component {
-  constructor (name, state, emit) {
-    super(name)
-    this.state = state
-    this.emit = emit
-    this.local = this.state.components[name] = {}
-    this.setState()
-  }
+module.exports = function users (state, emit) {
+  const { chat: { friends, username, userTimestamp }, ui: { showFriendsPanel } } = state
+  const users = friends.slice()
+  users.sort((a, b) => a.timestamp - b.timestamp)
 
-  setState () {
-    const { chat: { friends, username, userTimestamp } } = this.state
+  const displayOnMobile = showFriendsPanel ? 'db flex-grow-1' : 'dn'
 
-    this.local.friends = friends.slice()
-    this.local.friends.sort((a, b) => a.timestamp - b.timestamp)
-    this.local.username = username
-    this.local.userTimestamp = userTimestamp
-    this.local.toggleList = undefined
-  }
-
-  update () {
-    const { chat: { friends, username } } = this.state
-
-    let updateState = friends.length !== this.local.friends.length
-    updateState = updateState || typeof this.local.toggleList === 'boolean'
-    updateState = updateState || username !== this.local.username
-
-    if (updateState) {
-      this.setState()
-    }
-
-    return true
-  }
-
-  toggleFriends = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    this.listEl = this.element.querySelector('.list')
-    if (typeof this.local.toggleList === 'undefined') {
-      this.local.toggleList = true
-    } else {
-      this.local.toggleList = !this.local.toggleList
-    }
-
-    this.listEl.classList.toggle('dn', (!this.local.toggleList))
-    this.listEl.classList.toggle('vh-25', (this.local.toggleList))
-  }
-
-  createElement () {
-    return html`
-      <div>
-        <h2 class="f2 tc ma0 ph3 ph1-ns measure">
-          <a href="#" class="link dim dark-gray" onclick=${this.toggleFriends}>
-            Users
-          </a>
-        </h2>
-        <ul class="list dn db-ns pa3 mt0 measure center overflow-auto">
-          ${this.local.username ? user({ owner: true, username: this.local.username, timestamp: this.local.userTimestamp }) : null}
-          ${this.local.friends.map(user)}
-        </ul>
-      </div>
-    `
-  }
+  return html`
+    <aside class="${displayOnMobile} flex-grow-0-ns db-ns w-100 w-30-ns pa1-ns ba b--silver b--dashed br3 overflow-auto">
+      <h2 class="f2 tc ma0 ph3 ph1-ns measure">
+        Users
+      </h2>
+      <ul class="list dn db-ns pa3 mt0 measure center overflow-auto">
+        ${user({ owner: true, username, timestamp: userTimestamp })}
+        ${users.map(user)}
+      </ul>
+    </aside>
+  `
 }
