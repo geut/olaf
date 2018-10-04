@@ -34,3 +34,9 @@ body {
   left: 0;
   background: rgba(17, 17, 17, 0.51);
 }
+
+.icon-button {
+  width: 40px;
+  padding: 10px;
+  height: 40px;
+}

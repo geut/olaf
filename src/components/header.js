@@ -5,7 +5,7 @@ const keyIcon = require('./icons/key')
 
 const iconButton = (icon, onclick, classes = '') => {
   return html`
-    <a class="${classes} ma1 br-pill bg-dark-green no-underline washed-green ba b--dark-green grow pv2 ph3"
+    <a class="${classes || ''} icon-button ma1 br-pill bg-dark-green no-underline washed-green ba b--dark-green grow pv2 ph3"
       href="#" onclick=${onclick}>
       ${icon}
     </a>
