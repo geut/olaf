@@ -1,7 +1,7 @@
 const signalhub = require('signalhub')
 const ram = require('random-access-memory')
 const saga = require('../lib/saga')
-const swarm = require('../lib/discovery-swarm-webrtc')
+const swarm = require('@geut/discovery-swarm-webrtc')
 
 async function initChat (username, key) {
   const publicKey = key && key.length > 0 ? key : null
@@ -9,12 +9,12 @@ async function initChat (username, key) {
 
   await chat.initialize()
 
-  const hub = signalhub(chat.db.discoveryKey.toString('hex'), ['http://localhost:4000'])
-
-  const sw = swarm(hub, {
+  const sw = swarm({
     id: chat.db.local.key.toString('hex'),
     stream: () => chat.replicate()
   })
+
+  sw.join(signalhub(chat.db.discoveryKey.toString('hex'), ['http://localhost:4000']))
 
   sw.on('connection', async peer => {
     try {
