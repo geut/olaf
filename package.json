@@ -27,6 +27,7 @@
     "parcel-bundler": "^1.9.7"
   },
   "dependencies": {
+    "@geut/discovery-swarm-webrtc": "^1.0.0",
     "anchorme": "^1.1.2",
     "balloon-css": "^0.5.0",
     "choo": "^6.13.0",
