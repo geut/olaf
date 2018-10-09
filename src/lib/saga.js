@@ -1,9 +1,27 @@
 const EventEmitter = require('events')
+const { Writable } = require('stream')
 const hyperdb = require('hyperdb')
-const writer = require('flush-write-stream')
 const pump = require('pump')
 const hyperid = require('hyperid')
 const uuid = hyperid()
+
+class ForEachChunk extends Writable {
+  constructor (opts, cb) {
+    if (!cb) {
+      cb = opts
+      opts = {}
+    }
+    super(opts)
+
+    this.cb = cb
+  }
+
+  _write (chunk, enc, next) {
+    this.cb(chunk, enc, next)
+  }
+}
+
+const forEachChunk = (...args) => new ForEachChunk(...args)
 
 class Saga extends EventEmitter {
   constructor (storage, key, username) {
@@ -95,7 +113,7 @@ class Saga extends EventEmitter {
   _updateHistory (onFinish) {
     const h = this.db.createHistoryStream({ reverse: true })
 
-    const ws = writer.obj((data, enc, next) => {
+    const ws = forEachChunk({ objectMode: true }, (data, enc, next) => {
       const { key, value } = data
 
       if (/messages/.test(key)) {
