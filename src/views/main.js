@@ -1,11 +1,12 @@
 const html = require('choo/html')
 
 const initModal = require('../components/init-modal')
-const keyModal = require('../components/key-modal')
 const header = require('../components/header')
+const users = require('../components/users')
+
 const InputMsg = require('../components/input-msg')
 const ViewMessages = require('../components/view-messages')
-const users = require('../components/users')
+const KeyModal = require('../components/key-modal')
 
 module.exports = view
 
@@ -26,7 +27,7 @@ function view (state, emit) {
         </section>
       </main>
       ${(!init) ? initModal({ username, key }, this.emit, this.state.events) : ''}
-      ${showModalKey ? keyModal({ key }, this.emit, this.state.events) : ''}
+      ${showModalKey ? state.cache(KeyModal, 'keyModal').render({ key }) : ''}
     </body>
   `
 }
