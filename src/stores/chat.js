@@ -3,6 +3,13 @@ const ram = require('random-access-memory')
 const saga = require('../lib/saga')
 const swarm = require('@geut/discovery-swarm-webrtc')
 
+const webrtcOpts = {}
+if (process.env.ICE_URLS) {
+  webrtcOpts.config = {
+    iceServers: process.env.ICE_URLS.split(',').map(urls => ({ urls }))
+  }
+}
+
 async function initChat (username, key) {
   const publicKey = key && key.length > 0 ? key : null
   const chat = saga(ram, publicKey, username)
@@ -14,7 +21,10 @@ async function initChat (username, key) {
     stream: () => chat.replicate()
   })
 
-  sw.join(signalhub(chat.db.discoveryKey.toString('hex'), ['http://localhost:4000']))
+  const discoveryKey = chat.db.discoveryKey.toString('hex')
+  const signalUrls = process.env.SIGNAL_URLS ? process.env.SIGNAL_URLS.split(',') : ['http://localhost:4000']
+
+  sw.join(signalhub(discoveryKey, signalUrls), webrtcOpts)
 
   sw.on('connection', async peer => {
     try {
