@@ -26,7 +26,7 @@ module.exports = function modal (props, emit, events) {
               required>
           </div>
           <div class="measure center">
-            <label for="key" class="f6 b db mb2">Join to the channel</label>
+            <label for="key" class="f6 b db mb2">Join to the room</label>
 
             <input id="key"
               value=${key || ''}
@@ -43,8 +43,8 @@ module.exports = function modal (props, emit, events) {
             Join
           </a>
           <a class="center ma2 f6 br-pill dark-green no-underline ba grow pv2 ph3 dib"
-            href="#" onclick=${createChannel}>
-            Create channel
+            href="#" onclick=${createRoom}>
+            Create room
           </a>
         </div>
       </div>
@@ -55,15 +55,15 @@ module.exports = function modal (props, emit, events) {
     e.stopPropagation()
     e.preventDefault()
     if (username && username.length > 0 && key && key.length > 0) {
-      emit(events.INIT_CHANNEL)
+      emit(events.INIT_ROOM)
     }
   }
 
-  function createChannel (e) {
+  function createRoom (e) {
     e.stopPropagation()
     e.preventDefault()
     if (username && username.length > 0) {
-      emit(events.INIT_CHANNEL, true)
+      emit(events.INIT_ROOM, true)
     }
   }
 

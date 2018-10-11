@@ -42,7 +42,7 @@ function store (state, emitter) {
 
   // declare app events
   const { events } = state
-  events.INIT_CHANNEL = 'chat:init_channel'
+  events.INIT_ROOM = 'chat:init_room'
   events.UPDATE_USERNAME = 'chat:update_username'
   events.UPDATE_KEY = 'chat:update_key'
   events.JOIN_FRIEND = 'chat:join_friend'
@@ -53,7 +53,7 @@ function store (state, emitter) {
   let chat
 
   state.chat = {
-    initChannel: false,
+    initRoom: false,
     key: null,
     username: null,
     userTimestamp: null,
@@ -63,7 +63,7 @@ function store (state, emitter) {
 
   emitter.on('DOMContentLoaded', function () {
     rehydrate()
-    emitter.on(events.INIT_CHANNEL, initChannel)
+    emitter.on(events.INIT_ROOM, initRoom)
     emitter.on(events.UPDATE_USERNAME, updateUsername)
     emitter.on(events.UPDATE_KEY, updateKey)
     emitter.on(events.ADD_MESSAGE, addMessage)
@@ -73,23 +73,20 @@ function store (state, emitter) {
   })
 
   function rehydrate () {
-    // Al principio debemos chequear un par de cosas:
-    //   - cual es mi usuario
-    //   - si existe un channel o debo crearlo
-    //   Usaremos el localStorage para almacenar estos valores.
     const data = JSON.parse(window.localStorage.getItem('olaf'))
 
-    if (!data) {
-      return
-    }
+    state.chat.username = data ? data.username : null
 
-    state.chat.username = data.username
-    state.chat.key = data.key
+    if (state.query.key) {
+      state.chat.key = state.query.key
+    } else {
+      state.chat.key = data ? data.key : null
+    }
 
     render()
   }
 
-  async function initChannel (isNew = false) {
+  async function initRoom (isNew = false) {
     chat = await initChat(state.chat.username, isNew ? null : state.chat.key)
 
     state.chat.key = chat.db.key.toString('hex')
