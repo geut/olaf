@@ -82,7 +82,7 @@ class Message extends Component {
               <div class="dib f7 f6-ns mw4 truncate"><span>${username}</span></div>
             </div>
             <div class="flex">
-              <p class="dib f7 f6-ns pa1 pa3-ns pl0 f5-ns ml2 lh-copy mv0" style="word-break: break-all;">
+              <p class="dib f7 f6-ns pa1 pa3-ns pl0 pl0-ns f5-ns ml2 lh-copy mv0" style="word-break: break-all;">
                 ${raw(anchorme(message))}
               </p>
             </div>
