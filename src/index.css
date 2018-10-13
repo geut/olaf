@@ -9,7 +9,7 @@ body {
   color: #004466;
   background-color: #00ffa2;
 }
-
+/*
 .olaf__message:before {
   position: relative;
   float: left;
@@ -21,7 +21,7 @@ body {
   border-width: 8px 8px 8px 0;
   border-color: transparent #fff transparent transparent;
 }
-
+*/
 .break-word {
   overflow-wrap: break-word;
 }

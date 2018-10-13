@@ -5,7 +5,7 @@ const tinydate = require('tinydate').default
 const anchorme = require('anchorme').default
 const fileType = require('file-type')
 
-const stamp = tinydate('{DD}/{MM}/{YY} {HH}:{mm}:{ss}')
+const stamp = tinydate('{HH}:{mm}:{ss}')
 
 const parseMessage = message => {
   const anchor = anchorme(message, { list: true })
@@ -76,15 +76,22 @@ class Message extends Component {
     const date = stamp(new Date(timestamp))
     return html`
       <div class="flex h-auto mt3 tl" style="min-height:2rem">
-        <div class="flex mr2 mr4-ns h2 br3 order-1">
-          <div data-balloon="${date}" data-balloon-pos="right">
-            <div class="dib f7 f6-ns w3 w4-ns truncate"><span>${username}</span></div>
+        <div class="flex olaf__message bg-white w-auto br3 ba b--white">
+          <div class="flex flex-column w-90">
+            <div class="flex h2 mt1 ml2 w4">
+              <div class="dib f7 f6-ns mw4 truncate"><span>${username}</span></div>
+            </div>
+            <div class="flex">
+              <p class="dib f7 f6-ns pa1 pa3-ns pl0 f5-ns ml2 lh-copy mv0" style="word-break: break-all;">
+                ${raw(anchorme(message))}
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="flex order-2 olaf__message">
-          <p class="dib bg-white w-auto f7 f6-ns pa1 pa3-ns br3 ba b--white f5-ns lh-copy measure measure-wide-ns mv0" style="word-break: break-all;">
-            ${raw(anchorme(message))}
-          </p>
+          <div class="flex w-10 items-end pa1 pa3-ns ml2 ml5-ns justify-end">
+            <div data-balloon="${date}" data-balloon-pos="left">
+              <span class="f5-ns f6-ns f7 lh-copy">⌚️</span>
+            </div>
+          </div>
         </div>
         ${extra}
       </div>
