@@ -67,7 +67,7 @@ class Message extends Component {
       .catch(console.log)
   }
 
-  createElement (props) {
+  createElement (props, color = 'black') {
     const { username, message, timestamp } = props
     const { extra } = this.local
 
@@ -79,15 +79,15 @@ class Message extends Component {
         <div class="flex olaf__message bg-white w-auto br3 ba b--white">
           <div class="flex flex-column w-90">
             <div class="flex h2 mt1 ml2 w4">
-              <div class="dib f7 f6-ns mw4 truncate"><span>${username}</span></div>
+              <div class="dib f7 f6-ns mw4 truncate"><span style="color: ${color}">${username}</span></div>
             </div>
             <div class="flex">
-              <p class="dib f7 f6-ns pa1 pa3-ns pl0 pl0-ns f5-ns ml2 lh-copy mv0" style="word-break: break-all;">
+              <p class="dib f7 f6-ns pa1 pl0 pl0-ns f5-ns ml2 lh-copy mv0" style="word-break: break-all;">
                 ${raw(anchorme(message))}
               </p>
             </div>
           </div>
-          <div class="flex w-10 items-end pa1 pa3-ns ml2 ml5-ns justify-end">
+          <div class="flex w-10 items-end pa1 ph3-ns ml2 ml5-ns justify-end">
             <div data-balloon="${date}" data-balloon-pos="left">
               <span class="f5-ns f6-ns f7 lh-copy">⌚️</span>
             </div>

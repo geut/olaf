@@ -2,6 +2,7 @@ const signalhub = require('signalhub')
 const ram = require('random-access-memory')
 const saga = require('../lib/saga')
 const swarm = require('@geut/discovery-swarm-webrtc')
+const rcolor = require('random-color')
 
 const webrtcOpts = {}
 if (process.env.ICE_URLS) {
@@ -58,7 +59,8 @@ function store (state, emitter) {
     username: null,
     userTimestamp: null,
     messages: [],
-    friends: []
+    friends: [],
+    colors: {}
   }
 
   emitter.on('DOMContentLoaded', function () {
@@ -128,6 +130,9 @@ function store (state, emitter) {
   function joinFriend (user) {
     const index = state.chat.friends.findIndex(u => u.username === user.username)
     if (index !== -1) state.chat.friends.splice(index, 1)
+    const friendColor = rcolor(0.99, 0.99)
+    user.color = friendColor.hexString()
+    state.chat.colors[user.username] = user.color
     state.chat.friends.push(user)
     render()
   }

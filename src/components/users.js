@@ -14,7 +14,7 @@ module.exports = function users (state, emit) {
       <h2 class="f2 tc ma0 ph3 ph1-ns measure">
         Users
       </h2>
-      <ul class="list dn db-ns pa3 mt0 measure center overflow-auto">
+      <ul class="list pa3 mt0 measure center overflow-auto">
         ${user({ owner: true, username, timestamp: userTimestamp })}
         ${users.map(user)}
       </ul>
