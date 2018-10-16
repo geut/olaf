@@ -1,6 +1,6 @@
 const html = require('choo/html')
 
-module.exports = ({ owner = false, username, timestamp, color = '' }) => {
+module.exports = ({ owner = false, username, timestamp, color = 'green' }) => {
   if (!username || !timestamp) {
     return ''
   }
