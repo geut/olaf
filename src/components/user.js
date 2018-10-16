@@ -26,7 +26,7 @@ module.exports = ({ owner = false, username, timestamp, color = 'green' }) => {
         <span class="f6 db" style='${colorStyle}'>${username}${owner ? ' (you)' : ''}</span>
       </div>
       <div>
-        <span class="f6 db blue hover-dark-gray">${connectionTime}</span>
+        <span class="f6 db hover-dark-green">${connectionTime}</span>
       </div>
     </li>
   `
