@@ -1,6 +1,8 @@
 # olaf
 A P2P Dat-powered chat
 
+:smirk_cat: [Live](https://olafchat.netlify.com/)
+
 ## Commands
 Command                | Description                                      |
 -----------------------|--------------------------------------------------|
