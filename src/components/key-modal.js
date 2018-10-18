@@ -17,7 +17,8 @@ module.exports = class KeyModal extends Component {
   }
 
   load (el) {
-    QRCode.toCanvas(el.querySelector('#qrcode'), this.key)
+    const url = window.location.protocol + '//' + window.location.host
+    QRCode.toCanvas(el.querySelector('#qrcode'), `${url}?key=${this.key}`)
   }
 
   hideModalKey = () => {
