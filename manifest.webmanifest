@@ -3,7 +3,7 @@
   "short_name": "olaf",
   "description": "A P2P chat",
   "start_url": "/",
-  "display": "fullscreen",
+  "display": "standalone",
   "background_color": "#ffdfdf",
   "theme_color": "#ffdfdf",
   "icons": [
