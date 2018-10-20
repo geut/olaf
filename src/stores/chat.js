@@ -1,6 +1,7 @@
 const signalhub = require('signalhub')
-const ram = require('random-access-memory')
+const rai = require('random-access-idb')
 const saga = require('../lib/saga')
+const { getDB, updateDB } = require('../lib/db-names')
 const swarm = require('@geut/discovery-swarm-webrtc')
 const rcolor = require('random-color')
 
@@ -13,9 +14,14 @@ if (process.env.ICE_URLS) {
 
 async function initChat (username, key) {
   const publicKey = key && key.length > 0 ? key : null
-  const chat = saga(ram, publicKey, username)
+  const dbName = getDB(publicKey)
+  const chat = saga(rai(dbName), publicKey, username)
 
   await chat.initialize()
+
+  if (publicKey === null) {
+    updateDB(dbName, chat.db.key.toString('hex'))
+  }
 
   const sw = swarm({
     id: chat.db.local.key.toString('hex'),
