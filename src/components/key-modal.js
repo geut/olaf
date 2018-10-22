@@ -12,11 +12,21 @@ module.exports = class KeyModal extends Component {
     this.emit = emit
   }
 
-  update () {
-    return true
+  update ({ key }) {
+    if (this.key !== key) {
+      return true
+    }
   }
 
   load (el) {
+    this.loadQRCode(el)
+  }
+
+  afterupdate (el) {
+    this.loadQRCode(el)
+  }
+
+  loadQRCode (el) {
     const url = window.location.protocol + '//' + window.location.host
     QRCode.toCanvas(el.querySelector('#qrcode'), `${url}?key=${this.key}`)
   }

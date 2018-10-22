@@ -7,7 +7,7 @@ module.exports = function users (state, emit) {
   const users = friends.slice()
   users.sort((a, b) => a.timestamp - b.timestamp)
 
-  const displayOnMobile = showFriendsPanel ? 'db flex-grow-1' : 'dn'
+  const displayOnMobile = showFriendsPanel ? 'db flex-grow-1 flex-shrink-0' : 'dn'
 
   return html`
     <aside class="${displayOnMobile} flex-grow-0-ns db-ns w-100 w-30-ns pa1-ns ba b--silver b--dashed br3 overflow-auto">
