@@ -44,6 +44,8 @@ async function initChat (username, key) {
   return chat
 }
 
+const TIMEOUT_DISCONNECTION = 10000
+
 function store (state, emitter) {
   state.storeName = 'chat'
 
@@ -58,6 +60,7 @@ function store (state, emitter) {
   events.ADD_MESSAGE = 'chat:add_message'
 
   let chat
+  const timers = new Map()
 
   state.chat = {
     initRoom: false,
@@ -81,7 +84,7 @@ function store (state, emitter) {
   })
 
   function rehydrate () {
-    const data = JSON.parse(window.localStorage.getItem('olaf'))
+    const data = JSON.parse(localStorage.getItem('olaf/last-room'))
 
     state.chat.username = data ? data.username : null
 
@@ -101,7 +104,7 @@ function store (state, emitter) {
     state.chat.userTimestamp = Date.now()
     state.chat.init = true
 
-    window.localStorage.setItem('olaf', JSON.stringify({ username: state.chat.username, key: state.chat.key }))
+    localStorage.setItem('olaf/last-room', JSON.stringify({ username: state.chat.username, key: state.chat.key }))
 
     chat.on('message', data => {
       emitter.emit(events.ADD_MESSAGE, data)
@@ -135,7 +138,17 @@ function store (state, emitter) {
 
   function joinFriend (user) {
     const index = state.chat.friends.findIndex(u => u.username === user.username)
-    if (index !== -1) state.chat.friends.splice(index, 1)
+
+    // check if the user already exists
+    if (index !== -1) {
+      // check if it has a timer to disconnect
+      if (timers.has(user.username)) {
+        clearTimeout(timers.get(user.username))
+        timers.delete(user.username)
+      }
+      return
+    }
+
     const friendColor = rcolor(0.3, 0.99)
     user.color = friendColor.hexString()
     state.chat.colors[user.username] = user.color
@@ -146,8 +159,12 @@ function store (state, emitter) {
   function leaveFriend (user) {
     const index = state.chat.friends.findIndex(u => u.username === user.username)
     if (index !== -1) {
-      state.chat.friends.splice(index, 1)
-      render()
+      // the webrtc connection could be losted for a moment so it's better wait a couple of seconds
+      timers.set(user.username, setTimeout(() => {
+        state.chat.friends.splice(index, 1)
+        timers.delete(user.username)
+        render()
+      }, TIMEOUT_DISCONNECTION))
     }
   }
 
