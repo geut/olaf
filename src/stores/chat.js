@@ -6,9 +6,22 @@ const swarm = require('@geut/discovery-swarm-webrtc')
 const rcolor = require('random-color')
 
 const webrtcOpts = {}
+
 if (process.env.ICE_URLS) {
   webrtcOpts.config = {
-    iceServers: process.env.ICE_URLS.split(',').map(urls => ({ urls }))
+    iceServers: process.env.ICE_URLS.split(';').map(data => {
+      const [urls, credential, username] = data.split(',')
+
+      if (credential && username) {
+        return {
+          urls,
+          credential,
+          username
+        }
+      }
+
+      return { urls }
+    })
   }
 }
 
@@ -24,12 +37,12 @@ async function initChat (username, key) {
   }
 
   const sw = swarm({
-    id: chat.db.local.key.toString('hex'),
+    id: username,
     stream: () => chat.replicate()
   })
 
   const discoveryKey = chat.db.discoveryKey.toString('hex')
-  const signalUrls = process.env.SIGNAL_URLS ? process.env.SIGNAL_URLS.split(',') : ['https://signalhub-olaf.glitch.me/']
+  const signalUrls = process.env.SIGNAL_URLS ? process.env.SIGNAL_URLS.split(';') : ['https://signalhub-olaf.glitch.me/']
 
   sw.join(signalhub(discoveryKey, signalUrls), webrtcOpts)
 
