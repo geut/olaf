@@ -58,7 +58,7 @@ async function initChat (username, key) {
   return chat
 }
 
-const TIMEOUT_DISCONNECTION = 10000
+const TIMEOUT_DISCONNECTION = 30000
 
 function store (state, emitter) {
   state.storeName = 'chat'
