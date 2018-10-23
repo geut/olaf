@@ -23,6 +23,7 @@ if (process.env.ICE_URLS) {
       return { urls }
     })
   }
+  console.log('ICE Servers: ', webrtcOpts.config.iceServers)
 }
 
 async function initChat (username, key) {
