@@ -163,7 +163,7 @@ function store (state, emitter) {
       return
     }
 
-    const friendColor = rcolor(0.3, 0.99)
+    const friendColor = rcolor(0.99, 0.99)
     user.color = friendColor.hexString()
     state.chat.colors[user.username] = user.color
     state.chat.friends.push(user)
