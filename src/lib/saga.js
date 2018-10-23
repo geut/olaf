@@ -30,6 +30,7 @@ class Saga extends EventEmitter {
     this.messages = new Map()
     this.users = new Map()
     this.username = username
+    this.timestamp = Date.now()
     this.db = hyperdb(storage, key, { valueEncoding: 'json' })
   }
 
@@ -65,7 +66,7 @@ class Saga extends EventEmitter {
       userData: JSON.stringify({
         key: this.db.local.key,
         username: this.username,
-        timestamp: Date.now()
+        timestamp: this.timestamp
       })
     })
   }
