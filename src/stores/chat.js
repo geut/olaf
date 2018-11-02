@@ -43,7 +43,7 @@ async function initChat (username, key) {
   })
 
   const discoveryKey = chat.db.discoveryKey.toString('hex')
-  const signalUrls = process.env.SIGNAL_URLS ? process.env.SIGNAL_URLS.split(';') : ['wss://soyuka.pw']
+  const signalUrls = process.env.SIGNAL_URLS ? process.env.SIGNAL_URLS.split(';') : ['wss://signalhubws-olaf.glitch.me']
 
   sw.join(signalhub(discoveryKey, signalUrls), webrtcOpts)
 
