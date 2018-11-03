@@ -1,5 +1,6 @@
 const html = require('choo/html')
 
+const { THEME } = require('../lib/theme')
 const initModal = require('../components/init-modal')
 const header = require('../components/header')
 const users = require('../components/users')
@@ -9,11 +10,6 @@ const ViewMessages = require('../components/view-messages')
 const KeyModal = require('../components/key-modal')
 
 module.exports = view
-
-const THEME = {
-  light: 'dark-gray bg-washed-red',
-  dark: 'moon-gray bg-navy'
-}
 
 function view (state, emit) {
   const { username, key, init } = state.chat
