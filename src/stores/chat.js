@@ -3,7 +3,9 @@ const rai = require('random-access-idb')
 const saga = require('../lib/saga')
 const { getDB, updateDB } = require('../lib/db-names')
 const swarm = require('@geut/discovery-swarm-webrtc')
+const { COLORS } = require('../lib/theme')
 const rcolor = require('random-color')
+const contrast = require('color-contrast')
 
 const webrtcOpts = {}
 
@@ -163,8 +165,12 @@ function store (state, emitter) {
       return
     }
 
-    const friendColor = rcolor(0.99, 0.99)
-    user.color = friendColor.hexString()
+    let newColor = rcolor(0.99, 0.99).hexString()
+    const currentTheme = state.ui.toggleTheme ? 'light' : 'dark'
+    while (contrast(COLORS[currentTheme].hex.bg, newColor) < 4) {
+      newColor = rcolor(0.99, 0.99).hexString()
+    }
+    user.color = newColor
     state.chat.colors[user.username] = user.color
     state.chat.friends.push(user)
     render()
