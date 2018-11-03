@@ -5,6 +5,8 @@ const QRCode = require('qrcode')
 
 const clipboardIcon = require('./icons/clipboard')
 
+const url = window.location.protocol + '//' + window.location.host
+
 module.exports = class KeyModal extends Component {
   constructor (name, state, emit) {
     super(name)
@@ -27,7 +29,6 @@ module.exports = class KeyModal extends Component {
   }
 
   loadQRCode (el) {
-    const url = window.location.protocol + '//' + window.location.host
     QRCode.toCanvas(el.querySelector('#qrcode'), `${url}?key=${this.key}`)
   }
 
@@ -38,7 +39,7 @@ module.exports = class KeyModal extends Component {
 
   copyToClipboard = (e) => {
     e.preventDefault()
-    copy(this.key)
+    copy(`${url}?key=${this.key}`)
   };
 
   createElement ({ key }) {

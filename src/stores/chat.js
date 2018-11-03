@@ -1,4 +1,4 @@
-const signalhub = require('signalhub')
+const signalhub = require('signalhubws')
 const rai = require('random-access-idb')
 const saga = require('../lib/saga')
 const { getDB, updateDB } = require('../lib/db-names')
@@ -43,7 +43,7 @@ async function initChat (username, key) {
   })
 
   const discoveryKey = chat.db.discoveryKey.toString('hex')
-  const signalUrls = process.env.SIGNAL_URLS ? process.env.SIGNAL_URLS.split(';') : ['https://signalhub-olaf.glitch.me/']
+  const signalUrls = process.env.SIGNAL_URLS ? process.env.SIGNAL_URLS.split(';') : ['wss://signalhubws-olaf.glitch.me']
 
   sw.join(signalhub(discoveryKey, signalUrls), webrtcOpts)
 
