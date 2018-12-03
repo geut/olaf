@@ -2,16 +2,15 @@ const signalhub = require('signalhubws')
 const rai = require('random-access-idb')
 const saga = require('../lib/saga')
 const { getDB, updateDB } = require('../lib/db-names')
+const { SIGNAL_URLS, ICE_URLS } = require('../config')
 const swarm = require('@geut/discovery-swarm-webrtc')
 const { COLORS } = require('../lib/theme')
 const rcolor = require('random-color')
 const contrast = require('color-contrast')
 
-const webrtcOpts = {}
-
-if (process.env.ICE_URLS) {
-  webrtcOpts.config = {
-    iceServers: process.env.ICE_URLS.split(';').map(data => {
+const webrtcOpts = {
+  config: {
+    iceServers: (process.env.ICE_URLS || ICE_URLS).split(';').map(data => {
       const [urls, credential, username] = data.split(',')
 
       if (credential && username) {
@@ -25,8 +24,8 @@ if (process.env.ICE_URLS) {
       return { urls }
     })
   }
-  console.log('ICE Servers: ', webrtcOpts.config.iceServers)
 }
+console.log('ICE Servers: ', webrtcOpts.config.iceServers)
 
 async function initChat (username, key) {
   const publicKey = key && key.length > 0 ? key : null
@@ -45,7 +44,7 @@ async function initChat (username, key) {
   })
 
   const discoveryKey = chat.db.discoveryKey.toString('hex')
-  const signalUrls = process.env.SIGNAL_URLS ? process.env.SIGNAL_URLS.split(';') : ['wss://signalhubws-olaf.glitch.me']
+  const signalUrls = (process.env.SIGNAL_URLS || SIGNAL_URLS).split(';')
 
   sw.join(signalhub(discoveryKey, signalUrls), webrtcOpts)
 
