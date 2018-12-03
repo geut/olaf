@@ -116,7 +116,7 @@ function store (state, emitter) {
     chat = await initChat(state.chat.username, isNew ? null : state.chat.key)
 
     state.chat.key = chat.db.key.toString('hex')
-    state.chat.userTimestamp = Date.now()
+    state.chat.userTimestamp = chat.timestamp
     state.chat.init = true
 
     localStorage.setItem('olaf/last-room', JSON.stringify({ username: state.chat.username, key: state.chat.key }))
