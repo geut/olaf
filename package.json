@@ -51,7 +51,6 @@
     "random-access-idb": "^1.2.0",
     "random-access-memory": "^3.0.0",
     "random-color": "^1.0.1",
-    "signalhub": "^4.9.0",
     "signalhubws": "^1.0.4",
     "tachyons": "^4.11.1",
     "tinydate": "^1.0.0"
