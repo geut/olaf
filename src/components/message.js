@@ -15,7 +15,7 @@ const parseMessage = message => {
       const controller = new window.AbortController()
       const signal = controller.signal
 
-      const fetchPromise = window.fetch(anchorData.raw, { signal })
+      const fetchPromise = window.fetch(anchorData.raw, { signal, mode: 'cors', cache: 'default' })
 
       // 5 second timeout:
       setTimeout(() => controller.abort(), 5000)
