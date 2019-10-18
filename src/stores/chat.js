@@ -39,14 +39,12 @@ async function initChat (username, key) {
   }
 
   const sw = swarm({
-    id: username,
-    stream: () => chat.replicate()
+    bootstrap: (process.env.SIGNAL_URLS || SIGNAL_URLS).split(';'),
+    stream: () => chat.replicate(),
+    simplePeer: webrtcOpts
   })
 
-  const discoveryKey = chat.db.discoveryKey.toString('hex')
-  const signalUrls = (process.env.SIGNAL_URLS || SIGNAL_URLS).split(';')
-
-  sw.join(signalhub(discoveryKey, signalUrls), webrtcOpts)
+  sw.join(chat.db.discoveryKey, webrtcOpts)
 
   sw.on('connection', async peer => {
     try {
