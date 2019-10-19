@@ -34,7 +34,7 @@
     "parcel-plugin-sw-precache": "^1.0.1"
   },
   "dependencies": {
-    "@geut/discovery-swarm-webrtc": "^1.0.0",
+    "@geut/discovery-swarm-webrtc": "^2.2.4",
     "anchorme": "^1.1.2",
     "balloon-css": "^0.5.0",
     "choo": "^6.13.0",
